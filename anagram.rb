@@ -17,5 +17,3 @@ end
 return result
 
 end
-
-find_anagram('abc')
