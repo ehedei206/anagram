@@ -3,3 +3,7 @@ body {
 	background:url('images/tiles-01.png');
 	font-family:'montserrat', arial;
 }
+
+.error{
+color: red
+}
