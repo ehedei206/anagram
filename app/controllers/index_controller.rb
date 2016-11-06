@@ -3,9 +3,6 @@ get '/' do
   erb :index
 end
 
-get '/:error' do
-  erb :index
-end
 
 get '/anagrams/:word' do
   @word = params[:word]
@@ -16,17 +13,18 @@ end
 
 post '/' do
  
-  @word = params[:word]
-  if valid_input?(@word)
-      redirect "/anagrams/#{@word}"
-    else
-    	@error="Word is longer than 3 letters or it has duplicate letters"
-    	redirect "/#{@error}"
+   word = params[:word]
+    begin 
+      valid_input(word)
+      redirect "/anagrams/#{word}"
+    rescue Exception => error
+      @error = error.message
+      erb :index
     end
 end
 
 def three_letters?(input)
-	if input.size<4
+	if input.length<4
 		return true
 	else
 		return false
@@ -44,10 +42,8 @@ def distinct_letters?(input)
    end
 end
 
-def valid_input?(input)
-    if three_letters?(input) && distinct_letters?(input)
-      true
-    else
-      false
-    end
+def valid_input(input)
+  if input.length > 3
+     raise Exception.new("Word must be less than or equal to 3 characters.")
+  end
 end
